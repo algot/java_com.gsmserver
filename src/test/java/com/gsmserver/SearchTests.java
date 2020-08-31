@@ -2,6 +2,8 @@ package com.gsmserver;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
@@ -10,12 +12,15 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class SearchTests {
 
-
-    @Test
-    void searchProductByTitle() {
+    @BeforeEach
+    void openHomePage() {
         Configuration.browserSize = "1920x1080";
         clearBrowserCookies();
         open("https://gsmserver.com/");
+    }
+
+    @Test
+    void searchProductByTitleAndAddToCart() {
 
         var productName = "Z3X Box Samsung Edition (without Cable Set)";
         var productId = "860455";
@@ -31,6 +36,18 @@ public class SearchTests {
         $("#cart h1").shouldHave(text("Cart"));
         $$("#cart tr[data-product-id]").shouldHaveSize(1);
         findProductById(productId).$(".product-title").shouldHave(text(productName));
+    }
+
+
+    @Test
+    void searchProductByTitleTest() {
+        var productName = "Z3X Box Samsung Edition (without Cable Set)";
+//        var productId = "860455";
+
+        new HomePage().searchFor(productName);
+        var actualSearchResultTitle = new SearchResultPage().getSearchResultTitle();
+
+        Assertions.assertEquals(productName, actualSearchResultTitle);
     }
 
     private SelenideElement findProductById(String productId) {
