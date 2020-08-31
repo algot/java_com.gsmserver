@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group 'org.gsmserver'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_11
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    junit5Ver = "5.6.2"
+}
+
+dependencies {
+    testImplementation(
+            "org.junit.jupiter:junit-jupiter-api:$junit5Ver",
+            "com.codeborne:selenide:5.14.2"
+    )
+    testRuntimeOnly(
+            "org.junit.jupiter:junit-jupiter-engine:$junit5Ver",
+            "org.slf4j:slf4j-nop:1.7.30")
+}
+
+test {
+    useJUnitPlatform()
+}
