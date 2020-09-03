@@ -1,4 +1,5 @@
-# #1 Автоматизація з Selenide, ввідне заняття
-QA Club Lviv
+# Автоматизація з Selenide. QA Club Lviv
 
 https://youtu.be/SqiYAJfpQwY
+
+https://youtu.be/EbPJyHxGIgc
