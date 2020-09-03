@@ -1,6 +1,5 @@
 package com.gsmserver;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,13 +9,12 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 
-public class SearchTests {
+public class SearchTests extends BaseTest {
 
     @BeforeEach
     void openHomePage() {
-        Configuration.browserSize = "1920x1080";
         clearBrowserCookies();
-        open("https://gsmserver.com/");
+        open("/");
     }
 
     @Test
