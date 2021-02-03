@@ -1,7 +1,7 @@
 package com.gsmserver;
 
 import com.gsmserver.pages.HomePage;
-import com.gsmserver.pages.ProductComponent;
+import com.gsmserver.product.ProductComponent;
 import com.gsmserver.pages.SearchResultPage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +11,9 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
 public class SearchTests extends BaseTest {
+    private final String
+            productName = "Z3X Box Samsung Edition (without Cable Set)",
+            productId = "860455";
 
     @BeforeEach
     void openHomePage() {
@@ -20,30 +23,25 @@ public class SearchTests extends BaseTest {
 
     @Test
     void searchProductByTitleAndAddToCart() {
-
-        var productName = "Z3X Box Samsung Edition (without Cable Set)";
-        var productId = "860455";
-
         $("[name='searchword']").val(productName).pressEnter();
         $(".search-title-highlight").shouldHave(text(productName));
 
-        ProductComponent productComponent = new ProductComponent();
+        SearchResultPage searchResultPage = new SearchResultPage();
 
-        productComponent.findProductById(productId).$(".product-info_title").shouldHave(text(productName));
-        productComponent.findProductById(productId).$("[data-action-click='site.cart.add']").click();
-        productComponent.findProductById(productId).$(".in-cart").click();
+        var targetProduct = searchResultPage.targetProduct(productId);
+        targetProduct.getProductTitle().shouldHave(text(productName));
+        targetProduct.clickOnAddToCart().clickOnGoToCart();
 
         $("#cart h1").shouldHave(text("Cart"));
+
         $$("#cart tr[data-product-id]").shouldHaveSize(1);
-        productComponent.findProductById(productId).$(".product-title").shouldHave(text(productName));
+        searchResultPage.targetProduct(productId).getProductTitle().shouldHave(text(productName));
     }
 
 
     @Test
     void searchProductByTitleTest() {
-        var productName = "Z3X Box Samsung Edition (without Cable Set)";
-
-        new HomePage().searchFor(productName);
+        new HomePage().searchComponent.searchFor(productName);
 
         var searchResultPage = new SearchResultPage();
 
@@ -55,5 +53,14 @@ public class SearchTests extends BaseTest {
 
         var actualFirstProductTitle = searchResultPage.getFirstProductInfoTitle();
         Assertions.assertEquals(productName, actualFirstProductTitle);
+    }
+
+    @Test
+    void searchForProductViaClickOnSeeAllTest() {
+        new HomePage().searchComponent.fillSearchQuery(productName).clickOnSeeAll();
+        var searchResultPage = new SearchResultPage();
+
+        var actualSearchResultTitle = searchResultPage.getSearchResultTitle();
+        Assertions.assertEquals(productName, actualSearchResultTitle);
     }
 }

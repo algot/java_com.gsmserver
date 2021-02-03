@@ -10,6 +10,8 @@ public abstract class BaseTest {
         Configuration.baseUrl = "https://gsmserver.com";
         Configuration.savePageSource = false;
         Configuration.screenshots = false;
+        Configuration.timeout = 10000;
+        Configuration.pollingInterval = 500;
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(false));
     }
